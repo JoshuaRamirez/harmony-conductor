@@ -6,7 +6,7 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 
 const config = {
-    entry: './src/Bus.ts',
+    entry: './src/Conductor.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
     },

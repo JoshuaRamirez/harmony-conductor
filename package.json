@@ -3,9 +3,11 @@
   "version": "0.5.0",
   "description": "HarmonyConductor: A lightweight and type-safe event bus for seamless event handling and inter-component communication in JavaScript and TypeScript applications.",
   "main": "dist/main.js",
+  "types": "dist/index.d.ts",
   "directories": {
     "lib": "lib",
-    "test": "test"
+    "test": "test",
+    "dist": "dist"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,10 @@
     "url": "https://github.com/JoshuaRamirez/harmony-conductor/issues"
   },
   "homepage": "https://github.com/JoshuaRamirez/harmony-conductor#readme",
+  "files": [
+    "dist",
+    "types/*.d.ts"
+  ],
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
