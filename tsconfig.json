@@ -2,14 +2,17 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "commonjs",
     "target": "es5",
     "allowJs": true,
     "moduleResolution": "node",
     "declaration": true,
-    "outDir": "./dist"
+    "outDir": "./lib",
+    "esModuleInterop": true,
+    "lib": ["es2015"],
+    "sourceMap": true
   },
   "files": [
-    "src/Conductor.ts"
+    "index.ts"
   ]
 }

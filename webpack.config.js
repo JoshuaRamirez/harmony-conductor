@@ -1,5 +1,4 @@
-// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
+const TerserPlugin = require("terser-webpack-plugin");
 const path = require('path');
 
 const isProduction = process.env.NODE_ENV == 'production';
@@ -8,16 +7,23 @@ const isProduction = process.env.NODE_ENV == 'production';
 const config = {
     entry: './src/Conductor.ts',
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'lib'),
+        filename: 'index.js',
+        libraryTarget: 'umd',
+        library: 'harmony-conductor',
+        umdNamedDefine: true
     },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin(),
+        ],
+    },
+    devtool: 'source-map',
     devServer: {
         open: true,
         host: 'localhost',
     },
-    plugins: [
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
     module: {
         rules: [
             {
