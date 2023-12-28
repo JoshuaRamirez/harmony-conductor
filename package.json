@@ -1,8 +1,10 @@
 {
   "name": "harmony-conductor",
-  "version": "0.5.7",
+  "version": "0.6.0",
   "description": "HarmonyConductor: A lightweight and type-safe event bus for seamless event handling and inter-component communication in JavaScript and TypeScript applications.",
-  "main": "lib/main.js",
+  "main": "lib/harmony-conductor.common.js",
+  "module": "lib/harmony-conductor.esm.js",
+  "umd:main": "lib/harmony-conductor.umd.js",
   "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",

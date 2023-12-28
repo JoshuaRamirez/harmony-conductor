@@ -1,57 +1,75 @@
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require('path');
+const outputFolder = "lib"
+// Common configuration settings
+function createCommonConfig(isProduction) {
+    return {
+        mode: isProduction ? 'production' : 'development',
+        entry: './index.ts',
+        optimization: {
+            minimize: true,
+            minimizer: [new TerserPlugin()],
+        },
+        devtool: isProduction ? 'source-map' : 'eval-source-map',
+        devServer: {
+            open: true,
+            host: 'localhost',
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.(ts)$/i,
+                    loader: 'ts-loader',
+                    exclude: ['/node_modules/'],
+                },
+                // ... other rules
+            ],
+        },
+        resolve: {
+            extensions: ['.ts', '.js', '...'],
+        },
+    };
+}
 
-const isProduction = process.env.NODE_ENV == 'production';
+module.exports = (env, argv) => {
+    const isProduction = argv.mode === 'production';
 
+    const commonConfig = createCommonConfig(isProduction);
 
-const config = {
-    entry: './src/Conductor.ts',
-    output: {
-        path: path.resolve(__dirname, 'lib'),
-        filename: 'index.js',
-        libraryTarget: 'umd',
-        library: 'harmony-conductor',
-        umdNamedDefine: true
-    },
-    optimization: {
-        minimize: true,
-        minimizer: [
-            new TerserPlugin(),
-        ],
-    },
-    devtool: 'source-map',
-    devServer: {
-        open: true,
-        host: 'localhost',
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(ts|tsx)$/i,
-                loader: 'ts-loader',
-                exclude: ['/node_modules/'],
-            },
-            {
-                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
+    // UMD Configuration
+    const umdConfig = {
+        ...commonConfig,
+        output: {
+            path: path.resolve(__dirname, outputFolder),
+            filename: 'harmony-conductor.umd.js',
+            libraryTarget: 'umd',
+            library: 'HarmonyConductor',
+            umdNamedDefine: true,
+        },
+    };
 
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-    resolve: {
-        extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
-    },
-};
+    // CommonJS Configuration
+    const commonJsConfig = {
+        ...commonConfig,
+        output: {
+            path: path.resolve(__dirname, outputFolder),
+            filename: 'harmony-conductor.common.js',
+            libraryTarget: 'commonjs2',
+        },
+    };
 
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
+    // ES Module Configuration
+    const esmConfig = {
+        ...commonConfig,
+        output: {
+            path: path.resolve(__dirname, outputFolder),
+            filename: 'harmony-conductor.esm.js',
+            libraryTarget: 'module',
+        },
+        experiments: {
+            outputModule: true,
+        },
+    };
+
+    return [umdConfig, commonJsConfig, esmConfig];
 };
